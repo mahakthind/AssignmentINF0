@@ -57,3 +57,13 @@ flutter pub get
 Run the Project Once the dependencies are installed, can  be run the app:
 For Android:
 flutter run
+### License
+This project is licensed under the MIT License.
+
+License Choice
+The MIT License was chosen for this project because it is a permissive and open-source license. By using the MIT License, the project allows for:
+
+Freedom to use, modify, and distribute the project, both for personal and commercial purposes.
+A simple and easy-to-understand license that ensures the project can be contributed to by others while maintaining open collaboration.
+Protection for the authors, as it disclaims any liability for the software's use.
+The MIT License helps encourage community contributions and allows the app to be easily used in other open-source or commercial projects
