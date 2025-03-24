@@ -57,6 +57,20 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Future<void> _selectDateOfBirth(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      setState(() {
+        _profileData['dob'] = '${picked.toLocal()}'.split(' ')[0];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +98,7 @@ class ProfilePageState extends State<ProfilePage> {
                 _buildTextField('Name', 'Enter your name', 'name'),
                 _buildTextField('Email', 'Enter your email', 'email', keyboardType: TextInputType.emailAddress),
                 _buildTextField('Phone', 'Enter your phone number', 'phone', keyboardType: TextInputType.phone),
-                _buildTextField('Date of Birth', 'Enter your DOB (yyyy-mm-dd)', 'dob'),
+                _buildDatePickerField('Date of Birth', 'dob'),
                 _buildTextField('Height (cm)', 'Enter your height', 'height', keyboardType: TextInputType.number),
                 _buildTextField('Weight (kg)', 'Enter your weight', 'weight', keyboardType: TextInputType.number),
                 _buildDropdown('Gender', 'gender', ['Male', 'Female', 'Other']),
@@ -165,10 +179,10 @@ class ProfilePageState extends State<ProfilePage> {
           if (value == null || value.isEmpty) {
             return 'Please enter $label';
           }
-          if (key == 'email' &&
-              !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-            return 'Please enter a valid email';
-          }
+          if (key == 'email' && !RegExp(r'^[\w-\.]+@gmail\.com$').hasMatch(value)) {
+  return 'Please enter a valid email';
+}
+
           if (key == 'phone' && !RegExp(r'^\d{10,15}$').hasMatch(value)) {
             return 'Please enter a valid phone number';
           }
@@ -205,6 +219,32 @@ class ProfilePageState extends State<ProfilePage> {
           if (value != null) _profileData[key] = value;
         },
         validator: (value) => value == null ? 'Please select $label' : null,
+      ),
+    );
+  }
+
+  Widget _buildDatePickerField(String label, String key) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: TextFormField(
+        controller: TextEditingController(text: _profileData[key]),
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: 'Select your date of birth',
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.9),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        onTap: () async {
+          FocusScope.of(context).requestFocus(FocusNode());
+          await _selectDateOfBirth(context);
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please select $label';
+          }
+          return null;
+        },
       ),
     );
   }
